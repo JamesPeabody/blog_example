@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+
+# dj_database_url allows for the use of URLs to define database connections
+# See https://github.com/jacobian/dj-database-url
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -70,16 +75,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+# }
+
+# replaced literal declaration of database with URL style stored in environment setting DATABASE_URL
+# See dj_database_url documentation at https://github.com/jacobian/dj-database-url
+DATABASE = dj_database_url.config(default=r'sqlite:///db.sqlite3', conn_max_age=600)
+DATABASES = {'default': DATABASE}
 
 
 # Password validation
